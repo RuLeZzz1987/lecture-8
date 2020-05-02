@@ -21,7 +21,8 @@ function App() {
       <Nav />
       <Switch>
         <Route path="/" exact component={HomePage}/>
-        <Route path="/qwe" component={ArticlesPage}/>
+        <Route path="/articles/:id" component={ArticlePage}/>
+        <Route path="/articles" component={ArticlesPage}/>
         <Route path="/about-us" component={AboutPage}/>
         <Route component={NotFound}/>
       </Switch>

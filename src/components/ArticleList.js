@@ -1,10 +1,20 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-const ArticlesList = ({articles, match}) => articles.length && (
+const ArticlesList = ({articles, match, location}) => articles.length && (
   <ul>
     {articles.map(article => (
-      <li key={article.id}><Link to={`${match.path}/${article.id}`}>{article.title}</Link></li>
+      <li key={article.id}>
+        <Link to={{
+          pathname: `${match.path}/${article.id}`,
+          state: {
+            from: location
+          }
+        }}
+        >
+          {article.title}
+        </Link>
+      </li>
     ))}
   </ul>
 );

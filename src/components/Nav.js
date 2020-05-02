@@ -10,7 +10,7 @@ const Nav = () => (
   <ul>
     <li><NavLink activeStyle={linkStyle} exact to="/">home page</NavLink></li>
     <li><NavLink activeStyle={linkStyle} to="/about-us">about us page</NavLink></li>
-    <li><NavLink activeStyle={linkStyle} to="/qwe">articles</NavLink></li>
+    <li><NavLink activeStyle={linkStyle} to="/articles">articles</NavLink></li>
   </ul>
 );
 

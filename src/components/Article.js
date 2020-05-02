@@ -3,7 +3,18 @@ import { withRouter } from 'react-router-dom';
 
 class Article extends Component {
 
-  handleGoBack = () => this.props.history.push(`/${this.props.match.path.split('/').shift()}`);
+  handleGoBack = () => {
+    const { state } = this.props.location;
+
+    if (state) {
+      this.props.history.push(state.from);
+      return;
+    }
+
+    this.props.history.push({
+      pathname: '/articles',
+    });
+  };
 
   render() {
 
@@ -12,14 +23,15 @@ class Article extends Component {
       return null;
     }
 
-    const {title, author, img, text} = article;
+    const {title, author, img, text, category} = article;
 
     return (
       <div>
         <h3>Article Page</h3>
         <h2>{title}</h2>
-        <img src={img} alt="photo" width={300} height={150}/>
-        <p>{author}</p>
+        <img src={img} width={300} height={150}/>
+        <h4>Author: {author}</h4>
+        <p>Category: <b>{category}</b></p>
         <p>{text}</p>
         <button onClick={this.handleGoBack}>go back</button>
       </div>
