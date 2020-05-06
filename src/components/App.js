@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
-import AboutPage from '../pages/About';
-import NotFound from '../pages/NotFount';
+// import Loadable from 'react-loadable';
 import Nav from './Nav';
-import ArticlesPage from '../pages/ArticlesPage';
-import ArticlePage from '../pages/ArticlePage';
+import Loader from './Loader';
+
+// const HomePageAsync = Loadable({
+//   loader: () => import('../pages/HomePage' /* webpackChunkName: "home-page" */),
+//   loading: Loader,
+// });
+//
+// const AboutPageAsync = Loadable({
+//   loader: () => import('../pages/About' /* webpackChunkName: "about-page" */),
+//   loading: Loader,
+//   timeout: 2000,
+// });
+//
+// const NotFoundAsync = Loadable({
+//   loader: () => import('../pages/NotFound' /* webpackChunkName: "notfound-page" */),
+//   loading: Loader,
+//   timeout: 2000,
+// });
+//
+// const ArticlesPageAsync = Loadable({
+//   loader: () => import('../pages/ArticlesPage' /* webpackChunkName: "articles-page" */),
+//   loading: Loader,
+//   timeout: 2000,
+// });
+//
+// const ArticlePageAsync = Loadable({
+//   loader: () => import('../pages/ArticlePage' /* webpackChunkName: "article-page" */),
+//   loading: Loader,
+//   timeout: 2000,
+// });
+
+const HomePageAsync = lazy(() => import('../pages/HomePage' /* webpackChunkName: "home-page" */));
+const NotFoundAsync = lazy(() => import('../pages/NotFound' /* webpackChunkName: "notfound-page" */));
+const AboutPageAsync = lazy(() => import('../pages/About' /* webpackChunkName: "about-page" */));
+const ArticlesPageAsync = lazy(() => import('../pages/ArticlesPage' /* webpackChunkName: "articles-page" */));
+const ArticlePageAsync = lazy(() => import('../pages/ArticlePage' /* webpackChunkName: "article-page" */));
 
 const styles = {
   maxWidth: 1170,
@@ -18,14 +50,16 @@ function App() {
   return (
     <div style={styles}>
       <h1>Hello Page</h1>
-      <Nav />
-      <Switch>
-        <Route path="/" exact component={HomePage}/>
-        <Route path="/articles/:id" component={ArticlePage}/>
-        <Route path="/articles" component={ArticlesPage}/>
-        <Route path="/about-us" component={AboutPage}/>
-        <Route component={NotFound}/>
-      </Switch>
+      <Nav/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path="/" exact component={HomePageAsync}/>
+          <Route path="/articles/:id" component={ArticlePageAsync}/>
+          <Route path="/articles" component={ArticlesPageAsync}/>
+          <Route path="/about-us" component={AboutPageAsync}/>
+          <Route component={NotFoundAsync}/>
+        </Switch>
+      </Suspense>
     </div>
   );
 }
