@@ -1,45 +1,16 @@
-import * as Types from './actionTypes';
 import axios from "axios";
+import { createAction } from '@reduxjs/toolkit';
 
-export const addNote = text => ({
-  type: Types.ADD_NOTE,
+export const removeNote = createAction('REMOVE_NOTE');
+export const saveNote = createAction('SAVE_NOTE_CHANGES');
+export const addNote = createAction('ADD_NOTE', text => ({
   payload: { text, id: Date.now() }
-});
-
-export const removeNote = id => ({
-  type: Types.REMOVE_NOTE,
-  payload: { id }
-});
-
-export const changeNote = noteDraft => ({
-  type: Types.CHANGE_NOTE,
-  payload: { noteDraft }
-});
-
-export const editNote = note => ({
-  type: Types.START_EDIT,
-  payload: {note}
-});
-
-export const saveNote = note => ({
-  type: Types.SAVE_NOTE_CHANGES,
-  payload: {note}
-});
-
-export const changeEditor = text => ({
-  type: Types.CHANGE_EDITOR,
-  payload: {text}
-});
-
-export const setArticle = article => ({
-  type: Types.SET_ARTICLE,
-  payload: article
-});
-
-export const setArticles = articles => ({
-  type: Types.SET_ARTICLES,
-  payload: articles
-});
+}));
+export const changeNote = createAction('CHANGE_NOTE');
+export const editNote = createAction('START_EDIT');
+export const changeEditor = createAction('CHANGE_EDITOR');
+export const setArticle = createAction('SET_ARTICLE');
+export const setArticles = createAction('SET_ARTICLES');
 
 export const loadArticle = (id) => (dispatch) => {
   axios

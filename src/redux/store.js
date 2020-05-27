@@ -1,7 +1,8 @@
-import { createStore, applyMiddleware } from "redux";
+// import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from './reducer';
+import { configureStore } from "@reduxjs/toolkit";
 
 // const middleware = store => next => action => {};
 
@@ -19,10 +20,16 @@ import reducer from './reducer';
 
 
 
-const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+// const store = createStore(
+//   reducer,
+//   composeWithDevTools(applyMiddleware(thunk))
+// );
 
+
+const store = configureStore({
+  reducer,
+  middleware: [thunk],
+  devTools: true
+});
 
 export default store;

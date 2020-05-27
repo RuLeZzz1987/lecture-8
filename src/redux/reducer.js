@@ -1,58 +1,30 @@
-import * as Types from './actionTypes';
 import { combineReducers } from "redux";
+import { createReducer } from "@reduxjs/toolkit";
+import { setArticle, setArticles, addNote, removeNote, saveNote, changeNote, changeEditor, editNote } from "./action";
 
-const notesReducer = (state = [], action) => {
-  switch (action.type) {
-    case Types.ADD_NOTE:
-      return [...state, action.payload];
-    case Types.REMOVE_NOTE:
-      return state.filter(note => note.id !== action.payload.id);
-    case Types.SAVE_NOTE_CHANGES:
-      return state.map(note => note.id !== action.payload.note.id ? note : {...action.payload.note});
-    default:
-      return state;
-  }
-};
-const noteReducer = (state = '', action) => {
-  switch (action.type) {
-    case Types.CHANGE_NOTE:
-      state = action.payload.noteDraft;
-      return state;
-    default:
-      return state;
-  }
-};
+const notesReducer = createReducer([], {
+  [addNote]: (state, action) => [...state, action.payload],
+  [removeNote]: (state, action) => state.filter(note => note.id !== action.payload),
+  [saveNote]: (state, action) => state.map(note => note.id !== action.payload.id ? note : {...action.payload})
+});
 
-const noteEditor = (state = {id: null, text: ''}, action) => {
-  switch (action.type) {
-    case Types.START_EDIT:
-      return action.payload.note;
-    case Types.SAVE_NOTE_CHANGES:
-      return {id: null, text: ''};
-    case Types.CHANGE_EDITOR:
-      return {...state, text: action.payload.text};
-    default:
-      return state;
-  }
-};
+const noteReducer = createReducer('', {
+  [changeNote]: (state, action) => action.payload
+});
 
-const article = (state = null, action) => {
-  switch (action.type) {
-    case Types.SET_ARTICLE:
-      return action.payload;
-    default:
-      return state;
-  }
-};
+const noteEditor = createReducer({id: null, text: ''}, {
+  [editNote]: (state, action) => action.payload,
+  [saveNote]: () => ({id: null, text: ''}),
+  [changeEditor]: (state, action) => ({...state, text: action.payload})
+});
 
-const articles = (state = [], action) => {
-  switch (action.type) {
-    case Types.SET_ARTICLES:
-      return action.payload;
-    default:
-      return state;
-  }
-};
+const article = createReducer(null, {
+  [setArticle]: (state, action) => action.payload
+});
+
+const articles = createReducer([], {
+  [setArticles]: (state, action) => action.payload
+});
 
 export default combineReducers({
   note: noteReducer,
