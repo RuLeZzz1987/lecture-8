@@ -1,27 +1,22 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Article from '../components/Article';
+import { connect } from 'react-redux';
+import { loadArticle } from '../redux/action';
 
-export default class ArticlePage extends Component {
-
-  state = {article: null};
+class ArticlePage extends Component {
 
   componentDidMount() {
-    axios
-      .get(`http://localhost:4000/articles/${this.props.match.params.id}`)
-      .then(({data: article}) => this.setState({article}));
+    this.props.loadArticle(this.props.match.params.id);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      axios
-        .get(`http://localhost:4000/articles/${this.props.match.params.id}`)
-        .then(({data: article}) => this.setState({article}));
+      this.props.loadArticle(this.props.match.params.id);
     }
   }
 
   render() {
-    const {article} = this.state;
+    const {article} = this.props;
 
     return (
       <div>
@@ -31,3 +26,13 @@ export default class ArticlePage extends Component {
   }
 
 }
+
+const mapStateTopProps = state => ({
+  article: state.article
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadArticle: id => dispatch(loadArticle(id))
+});
+
+export default connect(mapStateTopProps, mapDispatchToProps)(ArticlePage);

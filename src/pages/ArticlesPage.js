@@ -2,23 +2,23 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ArticlesList from '../components/ArticleList';
 import Filters from '../components/Filters';
+import { connect } from "react-redux";
+import { loadArticles } from "../redux/action";
 // const categories = ['animals', 'cats', 'city', 'food', 'people', 'nature', 'sports', 'transport'];
 
-export default class ArticlesPage extends Component {
+class ArticlesPage extends Component {
 
   state = {
     articles: []
   };
 
   componentDidMount() {
-    axios.get(`http://localhost:4000/articles${this.props.location.search}`)
-      .then(({data:articles}) => this.setState({articles}));
+    this.props.loadArticles(this.props.location.search);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.location !== this.props.location) {
-      axios.get(`http://localhost:4000/articles${this.props.location.search}`)
-        .then(({data:articles}) => this.setState({articles}));
+      this.props.loadArticles(this.props.location.search);
     }
 
   }
@@ -36,7 +36,7 @@ export default class ArticlesPage extends Component {
   // };
 
   render() {
-    const {articles} = this.state;
+    const {articles} = this.props;
 
 
     // const {location} = this.props;
@@ -65,3 +65,13 @@ export default class ArticlesPage extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  articles: state.articles
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadArticles: search => dispatch(loadArticles(search))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticlesPage)

@@ -36,8 +36,28 @@ const noteEditor = (state = {id: null, text: ''}, action) => {
   }
 };
 
+const article = (state = null, action) => {
+  switch (action.type) {
+    case Types.SET_ARTICLE:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const articles = (state = [], action) => {
+  switch (action.type) {
+    case Types.SET_ARTICLES:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   note: noteReducer,
   notes: notesReducer,
-  editor: noteEditor
+  editor: noteEditor,
+  article,
+  articles
 });

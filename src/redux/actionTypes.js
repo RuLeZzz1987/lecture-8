@@ -5,3 +5,5 @@ export const REMOVE_NOTE = 'REMOVE_NOTE';
 export const START_EDIT = 'START_EDIT';
 export const SAVE_NOTE_CHANGES = 'SAVE_NOTE_CHANGES';
 export const CHANGE_EDITOR = 'CHANGE_EDITOR';
+export const SET_ARTICLE = 'SET_ARTICLE';
+export const SET_ARTICLES = 'SET_ARTICLES';
