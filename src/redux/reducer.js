@@ -27,8 +27,10 @@ const articles = createReducer([], {
 });
 
 export default combineReducers({
-  note: noteReducer,
-  notes: notesReducer,
+  notes: combineReducers({
+    note: noteReducer,
+    list: notesReducer,
+  }),
   editor: noteEditor,
   article,
   articles
