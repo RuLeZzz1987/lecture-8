@@ -1,6 +1,17 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-import { setArticle, setArticles, addNote, removeNote, saveNote, changeNote, changeEditor, editNote } from "./action";
+import {
+  setArticle,
+  setArticles,
+  addNote,
+  removeNote,
+  saveNote,
+  changeNote,
+  changeEditor,
+  editNote,
+  loginAction, changeLoginFormField,
+
+} from "./action";
 
 const notesReducer = createReducer([], {
   [addNote]: (state, action) => [...state, action.payload],
@@ -26,11 +37,29 @@ const articles = createReducer([], {
   [setArticles]: (state, action) => action.payload
 });
 
+const user = createReducer({}, {
+  [loginAction]: (state, {payload}) => payload.user
+});
+
+const token = createReducer(null, {
+  [loginAction]: (state, {payload}) => payload.token
+});
+
+const loginForm = createReducer({email: '', password: ''}, {
+  [changeLoginFormField]: (state, {payload}) => ({...state, [payload.name]: payload.value})
+});
+
+
 export default combineReducers({
   notes: combineReducers({
     note: noteReducer,
     list: notesReducer,
   }),
+  session: combineReducers({
+    user,
+    token
+  }),
+  loginForm,
   editor: noteEditor,
   article,
   articles

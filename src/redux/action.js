@@ -1,5 +1,7 @@
 import axios from "axios";
 import { createAction } from '@reduxjs/toolkit';
+import { signIn, signUp } from '../api';
+import { getLoginForm } from './selectors';
 
 export const removeNote = createAction('REMOVE_NOTE');
 export const saveNote = createAction('SAVE_NOTE_CHANGES');
@@ -11,6 +13,9 @@ export const editNote = createAction('START_EDIT');
 export const changeEditor = createAction('CHANGE_EDITOR');
 export const setArticle = createAction('SET_ARTICLE');
 export const setArticles = createAction('SET_ARTICLES');
+export const loginAction = createAction('LOGIN_ACTION');
+export const changeLoginFormField = createAction('CHANGE_LOGIN_FORM_FIELD');
+
 
 export const loadArticle = (id) => (dispatch) => {
   axios
@@ -22,4 +27,12 @@ export const loadArticles = (search) => (dispatch) => {
   axios
     .get(`http://localhost:4000/articles/${search}`)
     .then(({data: articles}) => dispatch(setArticles(articles)));
+};
+
+export const login = () => (dispatch, getState) => {
+  const loginForm = getLoginForm(getState());
+  signIn(loginForm)
+    .then(response => {
+      dispatch(loginAction(response));
+    })
 };

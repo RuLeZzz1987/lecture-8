@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 // import Loadable from 'react-loadable';
 import Nav from './Nav';
 import Loader from './Loader';
+import { connect } from "react-redux";
+import { isAuthorized } from "../redux/selectors";
 
 // const HomePageAsync = Loadable({
 //   loader: () => import('../pages/HomePage' /* webpackChunkName: "home-page" */),
@@ -38,6 +40,7 @@ const NotFoundAsync = lazy(() => import('../pages/NotFound' /* webpackChunkName:
 const AboutPageAsync = lazy(() => import('../pages/About' /* webpackChunkName: "about-page" */));
 const ArticlesPageAsync = lazy(() => import('../pages/ArticlesPage' /* webpackChunkName: "articles-page" */));
 const ArticlePageAsync = lazy(() => import('../pages/ArticlePage' /* webpackChunkName: "article-page" */));
+const LoginPageAsync = lazy(() => import('../pages/LoginPage' /* webpackChunkName: "login-page" */));
 
 const styles = {
   maxWidth: 1170,
@@ -46,17 +49,18 @@ const styles = {
 };
 
 
-function App() {
+function App({isAuthorized}) {
   return (
     <div style={styles}>
       <h1>Hello Page</h1>
-      <Nav/>
+      <Nav isAuthorized={isAuthorized}/>
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/" exact component={HomePageAsync}/>
-          <Route path="/articles/:id" component={ArticlePageAsync}/>
-          <Route path="/articles" component={ArticlesPageAsync}/>
+          {isAuthorized && <Route path="/articles/:id" component={ArticlePageAsync}/>}
+          {isAuthorized && <Route path="/articles" component={ArticlesPageAsync}/>}
           <Route path="/about-us" component={AboutPageAsync}/>
+          <Route path="/login" component={LoginPageAsync} />
           <Route component={NotFoundAsync}/>
         </Switch>
       </Suspense>
@@ -64,4 +68,9 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  isAuthorized: isAuthorized(state)
+});
+
+
+export default connect(mapStateToProps)(App);
