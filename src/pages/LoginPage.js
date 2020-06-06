@@ -16,32 +16,36 @@ export class LoginPage extends Component {
     const {changeLoginFormField, login, email, password} = this.props;
 
     return (
-      <div>
-        <div>
-          <label>
-            Email:
-            <input
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              onChange={changeLoginFormField}
-              value={email}
-            />
-          </label>
+      <div className="container">
+        <div className="col-xs-12 col-md-offset-2 col-md-8">
+          <div className="form-group">
+            <label>
+              Email:
+              <input
+                className="form-control"
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                onChange={changeLoginFormField}
+                value={email}
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Password:
+              <input
+                className="form-control"
+                name="password"
+                type="password"
+                placeholder="Enter password"
+                onChange={changeLoginFormField}
+                value={password}
+              />
+            </label>
+          </div>
+          <button onClick={login} className="btn btn-primary">Login</button>
         </div>
-        <div style={{margin: '20px 0'}}>
-          <label>
-            Password:
-            <input
-              name="password"
-              type="password"
-              placeholder="Enter password"
-              onChange={changeLoginFormField}
-              value={password}
-            />
-          </label>
-        </div>
-        <button onClick={login}>Login</button>
       </div>
     );
   }
