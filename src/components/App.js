@@ -5,6 +5,8 @@ import Nav from './Nav';
 import Loader from './Loader';
 import { connect } from "react-redux";
 import { isAuthorized } from "../redux/selectors";
+import { logoutAction } from "../redux/action";
+import { ProtectedRoute } from './ProtectedRoute';
 
 // const HomePageAsync = Loadable({
 //   loader: () => import('../pages/HomePage' /* webpackChunkName: "home-page" */),
@@ -49,16 +51,26 @@ const styles = {
 };
 
 
-function App({isAuthorized}) {
+function App({isAuthorized, logout}) {
   return (
     <div style={styles}>
       <h1>Hello Page</h1>
-      <Nav isAuthorized={isAuthorized}/>
+      <Nav isAuthorized={isAuthorized} logout={logout}/>
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/" exact component={HomePageAsync}/>
-          {isAuthorized && <Route path="/articles/:id" component={ArticlePageAsync}/>}
-          {isAuthorized && <Route path="/articles" component={ArticlesPageAsync}/>}
+          <ProtectedRoute
+            component={ArticlePageAsync}
+            isAuthorized={isAuthorized}
+            redirectTo="/login"
+            path="/articles/:id"
+          />
+          <ProtectedRoute
+            component={ArticlesPageAsync}
+            isAuthorized={isAuthorized}
+            redirectTo="/login"
+            path="/articles"
+          />
           <Route path="/about-us" component={AboutPageAsync}/>
           <Route path="/login" component={LoginPageAsync} />
           <Route component={NotFoundAsync}/>
@@ -72,5 +84,8 @@ const mapStateToProps = state => ({
   isAuthorized: isAuthorized(state)
 });
 
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logoutAction())
+});
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

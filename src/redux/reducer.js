@@ -9,7 +9,7 @@ import {
   changeNote,
   changeEditor,
   editNote,
-  loginAction, changeLoginFormField,
+  loginAction, changeLoginFormField, loginActionError, logoutAction,
 
 } from "./action";
 
@@ -38,11 +38,17 @@ const articles = createReducer([], {
 });
 
 const user = createReducer({}, {
-  [loginAction]: (state, {payload}) => payload.user
+  [loginAction]: (state, {payload}) => payload.user,
+  [logoutAction]: () => {}
 });
 
 const token = createReducer(null, {
-  [loginAction]: (state, {payload}) => payload.token
+  [loginAction]: (state, {payload}) => payload.token,
+  [logoutAction]: () => null
+});
+
+const loginError = createReducer(null, {
+  [loginActionError]: (state, {payload}) => payload.message
 });
 
 const loginForm = createReducer({email: '', password: ''}, {
@@ -57,7 +63,8 @@ export default combineReducers({
   }),
   session: combineReducers({
     user,
-    token
+    token,
+    error: loginError
   }),
   loginForm,
   editor: noteEditor,

@@ -10,6 +10,8 @@ export const getEditor = state => state.editor;
 
 export const getLoginForm = state => state.loginForm;
 
+export const getToken = state => state.session.token;
+
 export const isAuthorized = state => !!state.session.token;
 
 export const isAdmin = state => state.session.user && state.session.user.roles.includes('admin');
